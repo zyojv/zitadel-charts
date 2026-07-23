@@ -505,6 +505,35 @@ See https://github.com/zitadel/zitadel-charts/issues/602.
 {{- $loginUser := dict "SystemAPIUsers" (dict "login-client" (dict "Path" "/secrets/login-client/tls.crt" "Memberships" (list (dict "MemberType" "System" "Roles" (list "IAM_LOGIN_CLIENT"))))) -}}
 {{- $config = mergeOverwrite $loginUser $config -}}
 {{- end -}}
+{{/*
+Render native instrumentation (traces) into the ZITADEL config. The chart-level
+.Values.instrumentation block is a convenience wrapper that builds the
+Instrumentation section; user-supplied .Values.zitadel.configmapConfig.Instrumentation
+always wins so existing manual configuration keeps working.
+*/}}
+{{- $instrumentation := dict -}}
+{{- with .Values.instrumentation -}}
+{{- if .serviceName -}}
+{{- $_ := set $instrumentation "ServiceName" .serviceName -}}
+{{- end -}}
+{{- if .trace.enabled -}}
+{{- $exporter := dict "Type" .trace.exporterType "Endpoint" .trace.endpoint "Insecure" .trace.insecure -}}
+{{- if not (kindIs "invalid" .trace.batchDuration) -}}
+{{- $_ := set $exporter "BatchDuration" .trace.batchDuration -}}
+{{- end -}}
+{{- if not (kindIs "invalid" .trace.googleProjectID) -}}
+{{- $_ := set $exporter "GoogleProjectID" .trace.googleProjectID -}}
+{{- end -}}
+{{- $trace := dict "Exporter" $exporter "TrustRemoteSpans" .trace.trustRemoteSpans -}}
+{{- if not (kindIs "invalid" .trace.fraction) -}}
+{{- $_ := set $trace "Fraction" .trace.fraction -}}
+{{- end -}}
+{{- $_ := set $instrumentation "Trace" $trace -}}
+{{- end -}}
+{{- end -}}
+{{- if $instrumentation -}}
+{{- $config = mergeOverwrite (dict "Instrumentation" $instrumentation) $config -}}
+{{- end -}}
 {{- $config | toYaml -}}
 {{- end -}}
 

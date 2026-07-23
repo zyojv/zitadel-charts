@@ -1313,6 +1313,54 @@ metrics:
     # through a proxy.
     proxyUrl: null
 
+# Native OpenTelemetry instrumentation for the ZITADEL container. When enabled,
+# the chart renders the corresponding `Instrumentation` section into the ZITADEL
+# config (merged into zitadel.configmapConfig), so you don't have to set the
+# ZITADEL_INSTRUMENTATION_* env vars manually.
+# Ref: https://zitadel.com/docs/self-hosting/deploy/kubernetes/observability#traces
+# Ref: https://github.com/zitadel/zitadel/blob/main/cmd/defaults.yaml
+instrumentation:
+  # @schema type:[null,string]
+  # -- Service name reported for traces, metrics and logs. Maps to
+  # `Instrumentation.ServiceName` (ZITADEL_INSTRUMENTATION_SERVICENAME). If null,
+  # ZITADEL's default ("zitadel") is used.
+  serviceName: null
+  # Trace (span) exporting configuration. Maps to `Instrumentation.Trace`.
+  trace:
+    # -- Enable trace exporting. When false, no trace configuration is rendered
+    # and ZITADEL's defaults apply.
+    enabled: false
+    # @schema enum:["none","auto","stdOut","stdErr","grpc","http","google"]
+    # -- Exporter type. One of: "none", "auto", "stdOut", "stdErr", "grpc",
+    # "http", "google". Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_TYPE.
+    exporterType: "grpc"
+    # -- Endpoint of the OTEL collector for the "grpc" and "http" exporters,
+    # e.g. "otel-collector.monitoring.svc.cluster.local:4317". Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT.
+    endpoint: ""
+    # -- Disable TLS for the "grpc" and "http" exporters. Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE.
+    insecure: false
+    # @schema type:[null,number]
+    # -- Fraction of traces to sample, between 0.0 and 1.0. Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_FRACTION. If null, ZITADEL's default (1.0)
+    # is used.
+    fraction: null
+    # -- Trust incoming trace context from remote services for distributed
+    # tracing. Only enable in controlled environments. Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_TRUSTREMOTESPANS.
+    trustRemoteSpans: false
+    # @schema type:[null,string]
+    # -- Interval for batching traces before export, e.g. "1s". Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_BATCHDURATION. If null, ZITADEL's
+    # default (1s) is used.
+    batchDuration: null
+    # @schema type:[null,string]
+    # -- Project ID for the "google" exporter. Maps to
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_GOOGLEPROJECTID.
+    googleProjectID: null
+
 # Pod Disruption Budget configuration for the main ZITADEL deployment.
 # Ensures high availability by limiting the number of pods that can be
 # simultaneously unavailable during voluntary disruptions (e.g., node drains,
