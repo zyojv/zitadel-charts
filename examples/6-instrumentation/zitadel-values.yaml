@@ -1,0 +1,56 @@
+# Native OpenTelemetry instrumentation. The chart renders the corresponding
+# Instrumentation section into the ZITADEL config, so you don't have to set the
+# ZITADEL_INSTRUMENTATION_* environment variables manually.
+# Ref: https://zitadel.com/docs/self-hosting/deploy/kubernetes/observability#traces
+instrumentation:
+  # Service name reported for traces. Defaults to "zitadel" if omitted.
+  serviceName: zitadel
+  trace:
+    # Enable trace exporting.
+    enabled: true
+    # Exporter type: "grpc" (recommended) or "http".
+    exporterType: http
+    # Endpoint of your OpenTelemetry collector's OTLP receiver.
+    # Adjust this to point at your collector (e.g. an OpenTelemetry Collector,
+    # Grafana Alloy, or Jaeger). The gRPC receiver typically listens on 4317
+    # and the HTTP receiver on 4318.
+    endpoint: alloy.monitoring.svc.cluster.local:4318
+    # Disable TLS towards the collector. Set to false and configure TLS on your
+    # collector for production deployments.
+    insecure: true
+    # Sample every trace. Lower this (e.g. 0.1) to reduce trace volume.
+    fraction: 1.0
+
+# Expose Prometheus metrics from ZITADEL on /debug/metrics.
+metrics:
+  enabled: true
+
+zitadel:
+  masterkey: x123456789012345678901234567891y
+  configmapConfig:
+    ExternalDomain: instrumentation.127.0.0.1.sslip.io
+    ExternalPort: 443
+    TLS:
+      Enabled: false
+    Database:
+      Postgres:
+        Host: db-postgresql
+        Port: 5432
+        Database: zitadel
+        MaxOpenConns: 20
+        MaxIdleConns: 10
+        MaxConnLifetime: 30m
+        MaxConnIdleTime: 5m
+        User:
+          Username: postgres
+          SSL:
+            Mode: disable
+        Admin:
+          Username: postgres
+          SSL:
+            Mode: disable
+ingress:
+  enabled: true
+login:
+  ingress:
+    enabled: true
