@@ -1337,10 +1337,11 @@ instrumentation:
     exporterType: "grpc"
     # -- Endpoint of the OTEL collector for the "grpc" and "http" exporters,
     # e.g. "otel-collector.monitoring.svc.cluster.local:4317". Maps to
-    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT.
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT. Only rendered when set.
     endpoint: ""
     # -- Disable TLS for the "grpc" and "http" exporters. Maps to
-    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE.
+    # ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE. Only rendered for the
+    # "grpc" and "http" exporter types.
     insecure: false
     # @schema type:[null,number]
     # -- Fraction of traces to sample, between 0.0 and 1.0. Maps to

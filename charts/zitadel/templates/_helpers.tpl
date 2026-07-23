@@ -517,11 +517,17 @@ always wins so existing manual configuration keeps working.
 {{- $_ := set $instrumentation "ServiceName" .serviceName -}}
 {{- end -}}
 {{- if .trace.enabled -}}
-{{- $exporter := dict "Type" .trace.exporterType "Endpoint" .trace.endpoint "Insecure" .trace.insecure -}}
+{{- $exporter := dict "Type" .trace.exporterType -}}
+{{- if or (eq .trace.exporterType "grpc") (eq .trace.exporterType "http") -}}
+{{- if .trace.endpoint -}}
+{{- $_ := set $exporter "Endpoint" .trace.endpoint -}}
+{{- end -}}
+{{- $_ := set $exporter "Insecure" .trace.insecure -}}
+{{- end -}}
 {{- if not (kindIs "invalid" .trace.batchDuration) -}}
 {{- $_ := set $exporter "BatchDuration" .trace.batchDuration -}}
 {{- end -}}
-{{- if not (kindIs "invalid" .trace.googleProjectID) -}}
+{{- if and (eq .trace.exporterType "google") (not (kindIs "invalid" .trace.googleProjectID)) -}}
 {{- $_ := set $exporter "GoogleProjectID" .trace.googleProjectID -}}
 {{- end -}}
 {{- $trace := dict "Exporter" $exporter "TrustRemoteSpans" .trace.trustRemoteSpans -}}

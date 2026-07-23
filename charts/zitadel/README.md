@@ -251,11 +251,11 @@ Kubernetes: `>= 1.30.0-0`
 | instrumentation.serviceName | string | `nil` | Service name reported for traces, metrics and logs. Maps to `Instrumentation.ServiceName` (ZITADEL_INSTRUMENTATION_SERVICENAME). If null, ZITADEL's default ("zitadel") is used. |
 | instrumentation.trace.batchDuration | string | `nil` | Interval for batching traces before export, e.g. "1s". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_BATCHDURATION. If null, ZITADEL's default (1s) is used. |
 | instrumentation.trace.enabled | bool | `false` | Enable trace exporting. When false, no trace configuration is rendered and ZITADEL's defaults apply. |
-| instrumentation.trace.endpoint | string | `""` | Endpoint of the OTEL collector for the "grpc" and "http" exporters, e.g. "otel-collector.monitoring.svc.cluster.local:4317". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT. |
+| instrumentation.trace.endpoint | string | `""` | Endpoint of the OTEL collector for the "grpc" and "http" exporters, e.g. "otel-collector.monitoring.svc.cluster.local:4317". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT. Only rendered when set. |
 | instrumentation.trace.exporterType | string | `"grpc"` | Exporter type. One of: "none", "auto", "stdOut", "stdErr", "grpc", "http", "google". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_TYPE. |
 | instrumentation.trace.fraction | string | `nil` | Fraction of traces to sample, between 0.0 and 1.0. Maps to ZITADEL_INSTRUMENTATION_TRACE_FRACTION. If null, ZITADEL's default (1.0) is used. |
 | instrumentation.trace.googleProjectID | string | `nil` | Project ID for the "google" exporter. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_GOOGLEPROJECTID. |
-| instrumentation.trace.insecure | bool | `false` | Disable TLS for the "grpc" and "http" exporters. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE. |
+| instrumentation.trace.insecure | bool | `false` | Disable TLS for the "grpc" and "http" exporters. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE. Only rendered for the "grpc" and "http" exporter types. |
 | instrumentation.trace.trustRemoteSpans | bool | `false` | Trust incoming trace context from remote services for distributed tracing. Only enable in controlled environments. Maps to ZITADEL_INSTRUMENTATION_TRACE_TRUSTREMOTESPANS. |
 | livenessProbe.enabled | bool | `true` | Enable or disable the liveness probe. |
 | livenessProbe.failureThreshold | int | `3` | Number of consecutive failures before restarting the container. |

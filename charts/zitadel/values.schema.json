@@ -468,7 +468,7 @@
                             "type": "boolean"
                         },
                         "endpoint": {
-                            "description": "Endpoint of the OTEL collector for the \"grpc\" and \"http\" exporters, e.g. \"otel-collector.monitoring.svc.cluster.local:4317\". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT.",
+                            "description": "Endpoint of the OTEL collector for the \"grpc\" and \"http\" exporters, e.g. \"otel-collector.monitoring.svc.cluster.local:4317\". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT. Only rendered when set.",
                             "type": "string"
                         },
                         "exporterType": {
@@ -499,7 +499,7 @@
                             ]
                         },
                         "insecure": {
-                            "description": "Disable TLS for the \"grpc\" and \"http\" exporters. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE.",
+                            "description": "Disable TLS for the \"grpc\" and \"http\" exporters. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE. Only rendered for the \"grpc\" and \"http\" exporter types.",
                             "type": "boolean"
                         },
                         "trustRemoteSpans": {

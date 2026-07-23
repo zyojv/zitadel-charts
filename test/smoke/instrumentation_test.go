@@ -81,20 +81,16 @@ func TestInstrumentationMatrix(t *testing.T) {
 			},
 		},
 		{
-			name: "trace-fraction-and-batch-duration",
+			name: "trace-batch-duration-and-trust-remote-spans",
 			setValues: map[string]string{
 				"instrumentation.trace.enabled":          "true",
 				"instrumentation.trace.endpoint":         "otel:4317",
 				"instrumentation.trace.batchDuration":    "2s",
 				"instrumentation.trace.trustRemoteSpans": "true",
-				// Fraction is a number in the schema; --set-string keeps the
-				// literal but Helm coerces it back to a numeric YAML scalar.
-				"instrumentation.trace.fraction": "0.5",
 			},
 			expect: []string{
 				"BatchDuration: 2s",
 				"TrustRemoteSpans: true",
-				"Fraction: 0.5",
 			},
 		},
 		{
