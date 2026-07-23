@@ -443,6 +443,73 @@
                 }
             }
         },
+        "instrumentation": {
+            "type": "object",
+            "properties": {
+                "serviceName": {
+                    "description": "Service name reported for traces, metrics and logs. Maps to `Instrumentation.ServiceName` (ZITADEL_INSTRUMENTATION_SERVICENAME). If null, ZITADEL's default (\"zitadel\") is used.",
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "trace": {
+                    "type": "object",
+                    "properties": {
+                        "batchDuration": {
+                            "description": "Interval for batching traces before export, e.g. \"1s\". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_BATCHDURATION. If null, ZITADEL's default (1s) is used.",
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "enabled": {
+                            "description": "Enable trace exporting. When false, no trace configuration is rendered and ZITADEL's defaults apply.",
+                            "type": "boolean"
+                        },
+                        "endpoint": {
+                            "description": "Endpoint of the OTEL collector for the \"grpc\" and \"http\" exporters, e.g. \"otel-collector.monitoring.svc.cluster.local:4317\". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_ENDPOINT.",
+                            "type": "string"
+                        },
+                        "exporterType": {
+                            "description": "Exporter type. One of: \"none\", \"auto\", \"stdOut\", \"stdErr\", \"grpc\", \"http\", \"google\". Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_TYPE.",
+                            "type": "string",
+                            "enum": [
+                                "none",
+                                "auto",
+                                "stdOut",
+                                "stdErr",
+                                "grpc",
+                                "http",
+                                "google"
+                            ]
+                        },
+                        "fraction": {
+                            "description": "Fraction of traces to sample, between 0.0 and 1.0. Maps to ZITADEL_INSTRUMENTATION_TRACE_FRACTION. If null, ZITADEL's default (1.0) is used.",
+                            "type": [
+                                "null",
+                                "number"
+                            ]
+                        },
+                        "googleProjectID": {
+                            "description": "Project ID for the \"google\" exporter. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_GOOGLEPROJECTID.",
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "insecure": {
+                            "description": "Disable TLS for the \"grpc\" and \"http\" exporters. Maps to ZITADEL_INSTRUMENTATION_TRACE_EXPORTER_INSECURE.",
+                            "type": "boolean"
+                        },
+                        "trustRemoteSpans": {
+                            "description": "Trust incoming trace context from remote services for distributed tracing. Only enable in controlled environments. Maps to ZITADEL_INSTRUMENTATION_TRACE_TRUSTREMOTESPANS.",
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
         "livenessProbe": {
             "type": "object",
             "properties": {
